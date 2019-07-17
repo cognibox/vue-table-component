@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="shouldShowPagination" class="pager">
+  <div v-if="shouldShowPagination" class="pager">
     <ul class="pagination justify-content-center">
       <li>
         <a :class="{ disabled: gotoPreviousDisabled }"
@@ -30,7 +30,7 @@
         </a>
       </li>
     </ul>
-  </nav>
+  </div>
 </template>
 
 <script>
