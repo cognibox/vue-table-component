@@ -1,36 +1,34 @@
 <template>
-  <div v-if="shouldShowPagination" class="pager">
-    <ul class="pagination justify-content-center">
-      <li>
-        <a :class="{ disabled: gotoPreviousDisabled }"
-           @click="gotoPreviousPage()">
-          <i class="fa fa-angle-left"></i>
-        </a>
+  <ul v-if="shouldShowPagination" class="pagination justify-content-center">
+    <li>
+      <a :class="{ disabled: gotoPreviousDisabled }"
+         @click="gotoPreviousPage()">
+        <i class="fa fa-angle-left"></i>
+      </a>
+    </li>
+
+    <template v-for="(page, index) in pages">
+      <li
+        :key="`page${index}`"
+        v-if="page.type === 'page'"
+        class="page-item"
+        :class="{ active: page.active }"
+      >
+        <a class="page-link" @click="gotoPage(page)" :class="{ disabled: !page.enabled }">{{ page.number }}</a>
       </li>
 
-      <template v-for="(page, index) in pages">
-        <li
-          :key="`page${index}`"
-          v-if="page.type === 'page'"
-          class="page-item"
-          :class="{ active: page.active }"
-        >
-          <a class="page-link" @click="gotoPage(page)" :class="{ disabled: !page.enabled }">{{ page.number }}</a>
-        </li>
-
-        <li :key="`ellipsis${index}`" v-if="page.type === 'more'">
-          <span class="pagination-ellipsis" @click="ellipsisClick($event)">&hellip;</span>
-        </li>
-      </template>
-
-      <li :class="{ disabled: gotoNextDisabled }">
-        <a :class="{ disabled: gotoNextDisabled }"
-           @click="gotoNextPage()">
-          <i class="fa fa-angle-right"></i>
-        </a>
+      <li :key="`ellipsis${index}`" v-if="page.type === 'more'">
+        <span class="pagination-ellipsis" @click="ellipsisClick($event)">&hellip;</span>
       </li>
-    </ul>
-  </div>
+    </template>
+
+    <li :class="{ disabled: gotoNextDisabled }">
+      <a :class="{ disabled: gotoNextDisabled }"
+         @click="gotoNextPage()">
+        <i class="fa fa-angle-right"></i>
+      </a>
+    </li>
+  </ul>
 </template>
 
 <script>
