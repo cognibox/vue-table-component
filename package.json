@@ -2,12 +2,10 @@
   "name": "vue-table-component",
   "version": "1.9.2",
   "description": "A straightforward Vue component to filter and sort tables",
-  "main": "dist/index.js",
+  "main": "dist/vue-table-component.umd.min.js",
   "jsnext:main": "src/index.js",
   "scripts": {
-    "start": "webpack-dev-server --config docs/webpack.config.js",
-    "demo": "NODE_ENV=production webpack --config docs/webpack.config.js",
-    "build": "rm -rf dist && webpack --env.NODE_ENV=production",
+    "build": "vue-cli-service build --target lib --dest dist/ src/index.js",
     "lint": "./node_modules/.bin/eslint . --ext .js,.vue --quiet",
     "test": "vue-cli-service test:unit --require test/setup.js test/**/*.test.js"
   },

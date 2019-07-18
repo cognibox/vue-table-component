@@ -37,7 +37,7 @@
     </div>
 
     <template v-if="pagination && count">
-      <slot v-bind:pagination="{ ...pagination, pageChange, paginationEllipsisClick }">
+      <slot name="pagination" v-bind:pagination="{ count, pageChange, paginationEllipsisClick }">
         <pagination
           :current-page="pagination.currentPage"
           :per-page="pagination.perPage"
