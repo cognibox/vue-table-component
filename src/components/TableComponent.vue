@@ -252,6 +252,8 @@ export default {
 
       if (!this.usesLocalData) {
         this.mapDataToRows();
+      } else {
+        this.$emit('sort', this.sort)
       }
 
       this.saveState();
