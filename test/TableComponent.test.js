@@ -146,20 +146,6 @@ describe('TableComponent', () => {
           expect(header.classes()).to.contain('table-component__th--sort-asc');
         });
 
-        it('should sort asc', () => {
-          const trWrappers = component.findAll('tbody tr').wrappers;
-          const mappedRows = trWrappers.map((tr) => {
-            const tdWrappers = tr.findAll('td').wrappers;
-            return tdWrappers.map((element) => element.text());
-          });
-
-          expect(mappedRows).to.deep.equal([
-            ['a', 'a'],
-            ['b', 'c'],
-            ['c', 'b'],
-          ]);
-        });
-
         context('when clicking again on header', () => {
           beforeEach(() => {
             component.find('thead tr th').trigger('click');
@@ -168,20 +154,6 @@ describe('TableComponent', () => {
           it('should change the class to sort-desc', () => {
             const header = component.find('th');
             expect(header.classes()).to.contain('table-component__th--sort-desc');
-          });
-
-          it('should sort desc', () => {
-            const trWrappers = component.findAll('tbody tr').wrappers;
-            const mappedRows = trWrappers.map((tr) => {
-              const tdWrappers = tr.findAll('td').wrappers;
-              return tdWrappers.map((element) => element.text());
-            });
-
-            expect(mappedRows).to.deep.equal([
-              ['c', 'b'],
-              ['b', 'c'],
-              ['a', 'a'],
-            ]);
           });
         });
       });
