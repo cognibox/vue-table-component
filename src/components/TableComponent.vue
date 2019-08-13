@@ -250,10 +250,10 @@ export default {
         this.sort.order = 'asc';
       }
 
-      if (!this.usesLocalData) {
-        this.mapDataToRows();
+      if (this.usesLocalData) {
+        this.$emit('sort', this.sort);
       } else {
-        this.$emit('sort', this.sort)
+        this.mapDataToRows();
       }
 
       this.saveState();
