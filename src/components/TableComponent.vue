@@ -155,7 +155,7 @@ export default {
     },
 
     displayedRows() {
-      let rows = this.sortedRows;
+      let rows = this.rows;
 
       if (this.usesLocalData && this.pagination) {
         const lastPage = this.pagination.currentPage - 1;
@@ -164,28 +164,6 @@ export default {
       }
 
       return rows;
-    },
-
-    sortedRows() {
-      if (!this.usesLocalData) {
-        return this.rows;
-      }
-
-      if (this.sort.fieldName === '') {
-        return this.rows;
-      }
-
-      if (this.columns.length === 0) {
-        return this.rows;
-      }
-
-      const sortColumn = this.getColumn(this.sort.fieldName);
-
-      if (!sortColumn) {
-        return this.rows;
-      }
-
-      return this.cloneArray(this.rows).sort(sortColumn.getSortPredicate(this.sort.order, this.columns));
     },
 
     storageKey() {
