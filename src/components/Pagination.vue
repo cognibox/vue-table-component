@@ -23,7 +23,9 @@
           class="page-link"
           :class="{ disabled: !page.enabled }"
           @click="gotoPage(page)"
-        >{{ page.number }}</a>
+        >
+          {{ page.number }}
+        </a>
       </li>
 
       <li
@@ -33,7 +35,9 @@
         <span
           class="pagination-ellipsis"
           @click="ellipsisClick($event)"
-        >&hellip;</span>
+        >
+          &hellip;
+        </span>
       </li>
     </template>
 
