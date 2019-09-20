@@ -84,7 +84,7 @@ describe('TableComponent', () => {
     });
 
     context('when giving an afterRow slot', () => {
-      it.only('should display it', async() => {
+      it('should display it', async() => {
         const component = initMockComponent({
           slots: {
             'after-row': '<div id="after-row" />',
