@@ -10,20 +10,22 @@
                 :key="column.show"
                 :sort="sort"
                 :column="column"
-              ></table-column-header>
+              />
             </tr>
           </thead>
           <tbody :class="fullTableBodyClass">
-          <table-row
-            v-for="row in displayedRows"
-            :key="row.vueTableComponentInternalRowId"
-            :row="row"
-            :columns="columns"
-            @rowClick="emitRowClick"
-          ></table-row>
+            <template v-for="row in displayedRows">
+              <table-row
+                :key="row.vueTableComponentInternalRowId"
+                :row="row"
+                :columns="columns"
+                @rowClick="emitRowClick"
+              />
+              <slot name="after-row" :row="row" :columns="columns" />
+            </template>
           </tbody>
           <tfoot v-if="$slots.tfoot">
-              <slot name="tfoot" :rows="rows"></slot>
+            <slot name="tfoot" :rows="rows"/>
           </tfoot>
       </table>
     </div>
@@ -33,7 +35,7 @@
     </div>
 
     <div style="display:none;">
-      <slot></slot>
+      <slot/>
     </div>
 
     <template v-if="pagination && count">

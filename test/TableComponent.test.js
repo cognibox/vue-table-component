@@ -83,6 +83,20 @@ describe('TableComponent', () => {
       expect(mappedRows).to.deep.equal(expectedValues);
     });
 
+    context('when giving an afterRow slot', () => {
+      it.only('should display it', async() => {
+        const component = initMockComponent({
+          slots: {
+            'after-row': '<div id="after-row" />',
+          },
+        });
+
+        await component.vm.$nextTick();
+
+        expect(component.contains('#after-row')).to.be.true;
+      });
+    });
+
     context('when lastName is hidden', () => {
       let component;
 
