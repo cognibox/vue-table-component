@@ -1,11 +1,11 @@
 <template>
   <th
-    @click="clicked"
+    v-if="isVisible"
     :class="headerClass"
     role="columnheader"
     :aria-sort="ariaSort"
     :aria-disabled="ariaDisabled"
-    v-if="this.isVisible"
+    @click="clicked"
   >
     {{ label }}
   </th>
@@ -15,7 +15,16 @@
 import { classList } from '../helpers';
 
 export default {
-  props: ['column', 'sort'],
+  props: {
+    column: {
+      type: Object,
+      required: true,
+    },
+    sort: {
+      type: Object,
+      required: true,
+    },
+  },
 
   computed: {
     ariaDisabled() {

@@ -2,44 +2,57 @@
   <div class="table-component">
     <div class="table-component__table-wrapper">
       <table :class="fullTableClass">
-          <thead :class="fullTableHeadClass">
-            <tr>
-              <table-column-header
-                @click="changeSorting"
-                v-for="column in columns"
-                :key="column.show"
-                :sort="sort"
-                :column="column"
-              />
-            </tr>
-          </thead>
-          <tbody :class="fullTableBodyClass">
-            <template v-for="row in displayedRows">
-              <table-row
-                :key="row.vueTableComponentInternalRowId"
-                :row="row"
-                :columns="columns"
-                @rowClick="emitRowClick"
-              />
-              <slot name="after-row" :row="row" :columns="columns" />
-            </template>
-          </tbody>
-          <tfoot v-if="$slots.tfoot">
-            <slot name="tfoot" :rows="rows"/>
-          </tfoot>
+        <thead :class="fullTableHeadClass">
+          <tr>
+            <table-column-header
+              v-for="column in columns"
+              :key="column.show"
+              :sort="sort"
+              :column="column"
+              @click="changeSorting"
+            />
+          </tr>
+        </thead>
+        <tbody :class="fullTableBodyClass">
+          <template v-for="row in displayedRows">
+            <table-row
+              :key="row.vueTableComponentInternalRowId"
+              :row="row"
+              :columns="columns"
+              @rowClick="emitRowClick"
+            />
+            <slot
+              name="after-row"
+              :row="row"
+              :columns="columns"
+            />
+          </template>
+        </tbody>
+        <tfoot v-if="$slots.tfoot">
+          <slot
+            name="tfoot"
+            :rows="rows"
+          />
+        </tfoot>
       </table>
     </div>
 
-    <div v-if="displayedRows.length === 0" class="table-component__message">
+    <div
+      v-if="displayedRows.length === 0"
+      class="table-component__message"
+    >
       {{ filterNoResults }}
     </div>
 
     <div style="display:none;">
-      <slot/>
+      <slot />
     </div>
 
     <template v-if="pagination && count">
-      <slot name="pagination" v-bind:pagination="{ count, pageChange, paginationEllipsisClick }">
+      <slot
+        name="pagination"
+        :pagination="{ count, pageChange, paginationEllipsisClick }"
+      >
         <pagination
           :current-page="pagination.currentPage"
           :per-page="pagination.perPage"
@@ -70,21 +83,50 @@ export default {
   },
 
   props: {
-    data: { default: () => [], type: [Array, Function] },
-    pagination: { type: Object, default: undefined },
-
-    showCaption: { default: true },
-
-    sortBy: { default: '', type: String },
-    sortOrder: { default: '', type: String },
-
-    cacheKey: { default: null },
-    cacheLifetime: { default: 5 },
-
-    tableClass: { default: () => settings.tableClass },
-    theadClass: { default: () => settings.theadClass },
-    tbodyClass: { default: () => settings.tbodyClass },
-    filterNoResults: { default: () => settings.filterNoResults },
+    data: {
+      type: [Array, Function],
+      default: () => () => [],
+    },
+    pagination: {
+      type: Object,
+      default: undefined,
+    },
+    showCaption: {
+      type: Boolean,
+      default: true,
+    },
+    sortBy: {
+      type: String,
+      default: '',
+    },
+    sortOrder: {
+      type: String,
+      default: '',
+    },
+    cacheKey: {
+      type: String,
+      default: null,
+    },
+    cacheLifetime: {
+      type: Number,
+      default: 5,
+    },
+    tableClass: {
+      type: Function,
+      default: () => settings.tableClass,
+    },
+    theadClass: {
+      type: Function,
+      default: () => settings.theadClass,
+    },
+    tbodyClass: {
+      type: Function,
+      default: () => settings.tbodyClass,
+    },
+    filterNoResults: {
+      type: Function,
+      default: () => settings.filterNoResults,
+    },
   },
 
   data: () => ({
@@ -98,37 +140,6 @@ export default {
 
     localSettings: {},
   }),
-
-  created() {
-    this.sort.fieldName = this.sortBy;
-    this.sort.order = this.sortOrder;
-
-    this.restoreState();
-  },
-
-  async mounted() {
-    const columnComponents = this.$slots.default
-      .filter((column) => column.componentInstance)
-      .map((column) => column.componentInstance);
-
-    this.columns = columnComponents.map((column) => new Column(column));
-
-    columnComponents.forEach((columnCom) => {
-      Object.keys(columnCom.$options.props).forEach((prop) => columnCom.$watch(prop, () => {
-        this.columns = columnComponents.map((column) => new Column(column));
-      }));
-    });
-
-    await this.mapDataToRows();
-  },
-
-  watch: {
-    data() {
-      if (this.usesLocalData) {
-        this.mapDataToRows();
-      }
-    },
-  },
 
   computed: {
     fullTableClass() {
@@ -174,6 +185,37 @@ export default {
 
       return this.cacheKey ? storageWithCacheKey : storageWithoutCacheKey;
     },
+  },
+
+  watch: {
+    data() {
+      if (this.usesLocalData) {
+        this.mapDataToRows();
+      }
+    },
+  },
+
+  created() {
+    this.sort.fieldName = this.sortBy;
+    this.sort.order = this.sortOrder;
+
+    this.restoreState();
+  },
+
+  async mounted() {
+    const columnComponents = this.$slots.default
+      .filter((column) => column.componentInstance)
+      .map((column) => column.componentInstance);
+
+    this.columns = columnComponents.map((column) => new Column(column));
+
+    columnComponents.forEach((columnCom) => {
+      Object.keys(columnCom.$options.props).forEach((prop) => columnCom.$watch(prop, () => {
+        this.columns = columnComponents.map((column) => new Column(column));
+      }));
+    });
+
+    await this.mapDataToRows();
   },
 
   methods: {

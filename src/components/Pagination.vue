@@ -1,31 +1,48 @@
 <template>
-  <ul v-if="shouldShowPagination" class="pagination justify-content-center">
+  <ul
+    v-if="shouldShowPagination"
+    class="pagination justify-content-center"
+  >
     <li>
-      <a :class="{ disabled: gotoPreviousDisabled }"
-         @click="gotoPreviousPage()">
-        <i class="fa fa-angle-left"></i>
+      <a
+        :class="{ disabled: gotoPreviousDisabled }"
+        @click="gotoPreviousPage()"
+      >
+        <i class="fa fa-angle-left" />
       </a>
     </li>
 
     <template v-for="(page, index) in pages">
       <li
-        :key="`page${index}`"
         v-if="page.type === 'page'"
+        :key="`page${index}`"
         class="page-item"
         :class="{ active: page.active }"
       >
-        <a class="page-link" @click="gotoPage(page)" :class="{ disabled: !page.enabled }">{{ page.number }}</a>
+        <a
+          class="page-link"
+          :class="{ disabled: !page.enabled }"
+          @click="gotoPage(page)"
+        >{{ page.number }}</a>
       </li>
 
-      <li :key="`ellipsis${index}`" v-if="page.type === 'more'">
-        <span class="pagination-ellipsis" @click="ellipsisClick($event)">&hellip;</span>
+      <li
+        v-if="page.type === 'more'"
+        :key="`ellipsis${index}`"
+      >
+        <span
+          class="pagination-ellipsis"
+          @click="ellipsisClick($event)"
+        >&hellip;</span>
       </li>
     </template>
 
     <li :class="{ disabled: gotoNextDisabled }">
-      <a :class="{ disabled: gotoNextDisabled }"
-         @click="gotoNextPage()">
-        <i class="fa fa-angle-right"></i>
+      <a
+        :class="{ disabled: gotoNextDisabled }"
+        @click="gotoNextPage()"
+      >
+        <i class="fa fa-angle-right" />
       </a>
     </li>
   </ul>
