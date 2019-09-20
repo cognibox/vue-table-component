@@ -33,7 +33,7 @@ export default {
     },
     formatter: {
       type: Function,
-      default: () => (v) => v,
+      default: (v) => v,
     },
     hidden: {
       type: Boolean,

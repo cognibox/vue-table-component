@@ -85,7 +85,7 @@ export default {
   props: {
     data: {
       type: [Array, Function],
-      default: () => () => [],
+      default: () => [],
     },
     pagination: {
       type: Object,
@@ -124,8 +124,8 @@ export default {
       default: () => settings.tbodyClass,
     },
     filterNoResults: {
-      type: Function,
-      default: () => settings.filterNoResults,
+      type: String,
+      default: settings.filterNoResults,
     },
   },
 
