@@ -83,14 +83,41 @@ describe('TableComponent', () => {
       expect(mappedRows).to.deep.equal(expectedValues);
     });
 
-    context('when giving an afterRow slot', () => {
+    context('when giving a before-header slot', () => {
+      it('should display it', () => {
+        const component = initMockComponent({
+          slots: {
+            'before-header': '<div id="before-header" />',
+          },
+        });
+
+        expect(component.contains('#before-header')).to.be.true;
+      });
+    });
+
+    context('when giving a after-header slot', () => {
+      it('should display it', () => {
+        const component = initMockComponent({
+          slots: {
+            'after-header': '<div id="after-header" />',
+          },
+        });
+
+        expect(component.contains('#after-header')).to.be.true;
+      });
+    });
+
+    context('when giving an after-row slot', () => {
       let component;
 
       beforeEach(async() => {
         component = initMockComponent({
           scopedSlots: {
             'after-row': `
-              <div class="after-row" slot-scope="{ row, columns }">
+              <div class="after-row" slot-scope="{ index, row, columns }">
+                <span class="after-row-index">
+                  {{ index }}
+                </span>
                 <span class="after-row-first-name">
                   {{ row.data.firstName }}
                 </span>
@@ -109,13 +136,19 @@ describe('TableComponent', () => {
         expect(component.findAll('.after-row').wrappers.length).to.equal(data.length);
       });
 
+      it('should have access to the index', () => {
+        const indices = component.findAll('.after-row-index').wrappers.map((wrapper) => wrapper.text());
+        expect(indices.length).to.equal(data.length);
+        expect(indices).to.deep.equal(data.map((_row, index) => index.toString()));
+      });
+
       it('should have access to the row', () => {
         const firstNames = component.findAll('.after-row-first-name').wrappers.map((wrapper) => wrapper.text());
         expect(firstNames.length).to.equal(data.length);
         expect(firstNames).to.deep.equal(data.map((row) => row.firstName));
       });
 
-      it('should have access to the row', () => {
+      it('should have access to the columns', () => {
         const lengths = component.findAll('.after-row-column-length').wrappers.map((wrapper) => wrapper.text());
         expect(lengths.length).to.equal(data.length);
         expect(lengths).to.deep.equal(data.map((row) => `${Object.keys(row).length}`));
@@ -164,10 +197,9 @@ describe('TableComponent', () => {
 
     context('with footer slot', () => {
       it('should show the footer', async() => {
-        const component = initMockComponent({ firstNameSortable: true, slots: { tfoot: 'something' } });
+        const component = initMockComponent({ firstNameSortable: true, slots: { footer: '<div id="footer" />' } });
         await component.vm.$nextTick();
-        const tfoot = component.find('tfoot');
-        expect(tfoot.exists()).be.true;
+        expect(component.contains('#footer')).be.true;
       });
     });
 

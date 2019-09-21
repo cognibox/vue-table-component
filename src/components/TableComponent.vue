@@ -3,6 +3,7 @@
     <div class="table-component__table-wrapper">
       <table :class="fullTableClass">
         <thead :class="fullTableHeadClass">
+          <slot name="before-header" />
           <tr>
             <table-column-header
               v-for="column in columns"
@@ -12,9 +13,10 @@
               @click="changeSorting"
             />
           </tr>
+          <slot name="after-header" />
         </thead>
         <tbody :class="fullTableBodyClass">
-          <template v-for="row in displayedRows">
+          <template v-for="(row, index) in displayedRows">
             <table-row
               :key="row.vueTableComponentInternalRowId"
               :row="row"
@@ -23,17 +25,13 @@
             />
             <slot
               name="after-row"
+              :index="index"
               :row="row"
               :columns="columns"
             />
           </template>
         </tbody>
-        <tfoot v-if="$slots.tfoot">
-          <slot
-            name="tfoot"
-            :rows="rows"
-          />
-        </tfoot>
+        <slot name="footer" />
       </table>
     </div>
 
