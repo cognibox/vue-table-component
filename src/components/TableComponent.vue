@@ -20,6 +20,7 @@
             <table-row
               :key="row.vueTableComponentInternalRowId"
               :row="row"
+              :class="[ index % 2 === 0 ? 'even' : 'odd' ]"
               :columns="columns"
               @rowClick="emitRowClick"
             />

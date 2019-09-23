@@ -83,6 +83,18 @@ describe('TableComponent', () => {
       expect(mappedRows).to.deep.equal(expectedValues);
     });
 
+    it('should add the "even" class on even rows and the "odd" class on odd rows', async() => {
+      const component = initMockComponent();
+      await component.vm.$nextTick();
+
+      const trWrappers = component.findAll('tbody tr');
+
+      expect(trWrappers.at(0).classes('even')).to.be.true;
+      expect(trWrappers.at(0).classes('odd')).to.be.false;
+      expect(trWrappers.at(1).classes('even')).to.be.false;
+      expect(trWrappers.at(1).classes('odd')).to.be.true;
+    });
+
     context('when giving a before-header slot', () => {
       it('should display it', () => {
         const component = initMockComponent({
