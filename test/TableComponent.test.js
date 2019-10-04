@@ -96,26 +96,60 @@ describe('TableComponent', () => {
     });
 
     context('when giving a before-header slot', () => {
-      it('should display it', () => {
-        const component = initMockComponent({
-          slots: {
-            'before-header': '<div id="before-header" />',
+      let component;
+
+      beforeEach(async() => {
+        component = initMockComponent({
+          scopedSlots: {
+            'before-header': `
+              <div id="before-header" slot-scope="{ columns }">
+                {{ columns.length }}
+              </div>
+            `,
           },
         });
 
+        await component.vm.$nextTick();
+      });
+
+      it('should display it', () => {
         expect(component.contains('#before-header')).to.be.true;
+      });
+
+      it('should have access to the columns', () => {
+        const content = component.find('#before-header').text();
+
+        const numberOfColumns = 2;
+        expect(content).to.equal(numberOfColumns.toString());
       });
     });
 
     context('when giving a after-header slot', () => {
-      it('should display it', () => {
-        const component = initMockComponent({
-          slots: {
-            'after-header': '<div id="after-header" />',
+      let component;
+
+      beforeEach(async() => {
+        component = initMockComponent({
+          scopedSlots: {
+            'after-header': `
+              <div id="after-header" slot-scope="{ columns }">
+                {{ columns.length }}
+              </div>
+            `,
           },
         });
 
+        await component.vm.$nextTick();
+      });
+
+      it('should display it', () => {
         expect(component.contains('#after-header')).to.be.true;
+      });
+
+      it('should have access to the columns', () => {
+        const content = component.find('#after-header').text();
+
+        const numberOfColumns = 2;
+        expect(content).to.equal(numberOfColumns.toString());
       });
     });
 

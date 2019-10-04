@@ -3,7 +3,10 @@
     <div class="table-component__table-wrapper">
       <table :class="fullTableClass">
         <thead :class="fullTableHeadClass">
-          <slot name="before-header" />
+          <slot
+            name="before-header"
+            :columns="columns"
+          />
           <tr>
             <table-column-header
               v-for="column in columns"
@@ -13,7 +16,10 @@
               @click="changeSorting"
             />
           </tr>
-          <slot name="after-header" />
+          <slot
+            name="after-header"
+            :columns="columns"
+          />
         </thead>
         <tbody :class="fullTableBodyClass">
           <template v-for="(row, index) in displayedRows">
