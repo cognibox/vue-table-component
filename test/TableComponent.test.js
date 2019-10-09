@@ -300,6 +300,10 @@ describe('TableComponent', () => {
             const header = component.find('th');
             expect(header.classes()).to.contain('table-component__th--sort-desc');
           });
+
+          it('should emit a data-change event', () => {
+            expect(component.emitted('data-change')).to.not.be.undefined;
+          });
         });
       });
     });

@@ -240,6 +240,8 @@ export default {
       this.rows = data
         .map((rowData, rowIndex) => ({ ...rowData, vueTableComponentInternalRowId: rowIndex }))
         .map((rowData) => new Row(rowData, this.columns));
+
+      this.$emit('data-change');
     },
 
     paginationEllipsisClick(event) {
