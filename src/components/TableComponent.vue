@@ -33,7 +33,7 @@
             <slot
               name="after-row"
               :index="index"
-              :row="row"
+              :row="row.data"
               :columns="columns"
             />
           </template>
