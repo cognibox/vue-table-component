@@ -165,7 +165,7 @@ describe('TableComponent', () => {
                   {{ index }}
                 </span>
                 <span class="after-row-first-name">
-                  {{ row.data.firstName }}
+                  {{ row.firstName }}
                 </span>
                 <span class="after-row-column-length">
                   {{ columns.length }}
