@@ -13,12 +13,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default {
-  install(Vue, options = {}) {
+  install(vue, options = {}) {
     mergeSettings(options);
 
-    Vue.component('table-component', TableComponent);
-    Vue.component('table-column', TableColumn);
-    Vue.component('pagination', Pagination);
+    vue.component('table-component', TableComponent);
+    vue.component('table-column', TableColumn);
+    vue.component('pagination', Pagination);
   },
 
   settings(settings) {
