@@ -1,20 +1,14 @@
-import TableComponent from './components/TableComponent';
 import TableColumn from './components/TableColumn';
+import TableComponent from './components/TableComponent';
 import Pagination from './components/Pagination';
-import { mergeSettings } from './settings';
 
-export default {
-  install(Vue, options = {}) {
-    mergeSettings(options);
+import Vue from 'vue';
+import TableExample from './components/TableExample';
 
-    Vue.component('table-component', TableComponent);
-    Vue.component('table-column', TableColumn);
-    Vue.component('pagination', Pagination);
-  },
-
-  settings(settings) {
-    mergeSettings(settings);
-  },
-};
+if (process.env.NODE_ENV !== 'production') {
+  new Vue({
+    render: (h) => h(TableExample),
+  }).$mount('#app');
+}
 
 export { TableComponent, TableColumn, Pagination };

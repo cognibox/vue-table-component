@@ -24,7 +24,7 @@
         <tbody :class="fullTableBodyClass">
           <template v-for="(row, index) in displayedRows">
             <table-row
-              :key="row.vueTableComponentInternalRowId"
+              :key="row.index"
               :row="row"
               :class="[ index % 2 === 0 ? 'even' : 'odd' ]"
               :columns="columns"
@@ -238,8 +238,7 @@ export default {
       const data = this.usesLocalData ? this.prepareLocalData() : await this.fetchServerData();
 
       this.rows = data
-        .map((rowData, rowIndex) => ({ ...rowData, vueTableComponentInternalRowId: rowIndex }))
-        .map((rowData) => new Row(rowData, this.columns));
+        .map((rowData, rowIndex) => new Row(rowData, this.columns, rowIndex));
 
       this.$emit('data-change');
     },
