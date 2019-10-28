@@ -1,9 +1,10 @@
 import { get } from '../helpers';
 
 export default class Row {
-  constructor(data, columns) {
+  constructor(data, columns, index) {
     this.data = data;
     this.columns = columns;
+    this.index = index;
   }
 
   getValue(columnName) {
