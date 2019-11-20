@@ -215,9 +215,11 @@ export default {
     this.columns = columnComponents.map((column) => new Column(column));
 
     columnComponents.forEach((columnCom) => {
-      Object.keys(columnCom.$options.props).forEach((prop) => columnCom.$watch(prop, () => {
-        this.columns = columnComponents.map((column) => new Column(column));
-      }));
+      if (columnCom.$options.props) {
+        Object.keys(columnCom.$options.props).forEach((prop) => columnCom.$watch(prop, () => {
+          this.columns = columnComponents.map((column) => new Column(column));
+        }));
+      }
     });
 
     await this.mapDataToRows();

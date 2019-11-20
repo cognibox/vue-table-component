@@ -1,5 +1,6 @@
 import TableComponent from '@/components/TableComponent.vue';
 import TableColumn from '@/components/TableColumn';
+import tableColumnMixin from '@/components/table-column-mixin';
 
 describe('TableComponent', () => {
   let data, localVue;
@@ -7,6 +8,20 @@ describe('TableComponent', () => {
   beforeEach(() => {
     localVue = createLocalVue();
     localVue.component('table-column', TableColumn);
+    localVue.component('table-column-super', {
+      mixins: [tableColumnMixin],
+      render(h) {
+        return h(
+          'table-column',
+          {
+            props: {
+              show: 'b',
+              sortable: true,
+            },
+          },
+        );
+      },
+    });
 
     TableComponent.__Rewire__('expiringStorage', {
       get() { return null; },
@@ -24,7 +39,7 @@ describe('TableComponent', () => {
       const headers = component.findAll('th').wrappers;
       const headerTitles = headers.map((header) => header.text());
 
-      expect(headerTitles).to.deep.equal(['First name', 'Last name']);
+      expect(headerTitles).to.deep.equal(['First name', 'Last name', 'b']);
     });
 
     it('should show a no result message', async() => {
@@ -54,8 +69,8 @@ describe('TableComponent', () => {
   context('when data is not empty', () => {
     beforeEach(() => {
       data = [
-        { firstName: 'mew', lastName: 'pew' },
-        { firstName: 'maw', lastName: 'paw' },
+        { firstName: 'mew', lastName: 'pew', b: 'B' },
+        { firstName: 'maw', lastName: 'paw', b: 'b' },
       ];
     });
 
@@ -66,7 +81,7 @@ describe('TableComponent', () => {
       const headers = component.findAll('th').wrappers;
       const headerTitles = headers.map((header) => header.text());
 
-      expect(headerTitles).to.deep.equal(['First name', 'Last name']);
+      expect(headerTitles).to.deep.equal(['First name', 'Last name', 'b']);
     });
 
     it('should display content', async() => {
@@ -119,7 +134,7 @@ describe('TableComponent', () => {
       it('should have access to the columns', () => {
         const content = component.find('#before-header').text();
 
-        const numberOfColumns = 2;
+        const numberOfColumns = 3;
         expect(content).to.equal(numberOfColumns.toString());
       });
     });
@@ -148,7 +163,7 @@ describe('TableComponent', () => {
       it('should have access to the columns', () => {
         const content = component.find('#after-header').text();
 
-        const numberOfColumns = 2;
+        const numberOfColumns = 3;
         expect(content).to.equal(numberOfColumns.toString());
       });
     });
@@ -201,7 +216,7 @@ describe('TableComponent', () => {
       });
     });
 
-    context('when lastName is hidden', () => {
+    context('when lastName and b is hidden', () => {
       let component;
 
       beforeEach(async() => {
@@ -216,7 +231,7 @@ describe('TableComponent', () => {
         expect(headerTitles).to.deep.equal(['First name']);
       });
 
-      it('should not display lastName content', () => {
+      it('should not display lastName and b content', () => {
         const trWrappers = component.findAll('tbody tr').wrappers;
         const mappedRows = trWrappers.map((tr) => {
           const tdWrappers = tr.findAll('td').wrappers;
@@ -225,6 +240,7 @@ describe('TableComponent', () => {
 
         const expectedValues = data.map((item) => {
           delete item.lastName;
+          delete item.b;
           return Object.values(item);
         });
         expect(mappedRows).to.deep.equal(expectedValues);
@@ -235,9 +251,9 @@ describe('TableComponent', () => {
   describe('footer', () => {
     beforeEach(() => {
       data = [
-        { firstName: 'b', lastName: 'c' },
-        { firstName: 'a', lastName: 'a' },
-        { firstName: 'c', lastName: 'b' },
+        { firstName: 'b', lastName: 'c', b: 'a' },
+        { firstName: 'a', lastName: 'a', b: 'c' },
+        { firstName: 'c', lastName: 'b', b: 'b' },
       ];
     });
 
@@ -264,9 +280,9 @@ describe('TableComponent', () => {
 
     beforeEach(() => {
       data = [
-        { firstName: 'b', lastName: 'c' },
-        { firstName: 'a', lastName: 'a' },
-        { firstName: 'c', lastName: 'b' },
+        { firstName: 'b', lastName: 'c', b: 'a' },
+        { firstName: 'a', lastName: 'a', b: 'c' },
+        { firstName: 'c', lastName: 'b', b: 'b' },
       ];
     });
 
@@ -337,9 +353,9 @@ describe('TableComponent', () => {
           });
 
           expect(mappedRows).to.deep.equal([
-            ['b', 'c'],
-            ['a', 'a'],
-            ['c', 'b'],
+            ['b', 'c', 'a'],
+            ['a', 'a', 'c'],
+            ['c', 'b', 'b'],
           ]);
         });
       });
@@ -350,6 +366,7 @@ describe('TableComponent', () => {
     const defaultSlot = `
       <table-column show="firstName" label="First name" :sortable="${firstNameSortable}"></table-column>
       <table-column show="lastName" label="Last name" :hidden="${lastNameHidden}"></table-column>
+      <table-column-super :hidden="${lastNameHidden}" />
     `;
 
     return mockTableComponent({
