@@ -1,11 +1,20 @@
 export default {
   data() {
     return {
-      show: '',
-      sortable: false,
     };
   },
   props: {
+    row: {
+      required: false,
+    },
+    show: {
+      type: String,
+      default: 'a',
+    },
+    sortable: {
+      type: Boolean,
+      default: false,
+    },
     formatter: {
       type: Function,
       default: (v) => v,
@@ -18,10 +27,5 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  mounted() {
-    const tableColumn = this.$children[0];
-    this.show = tableColumn.show;
-    this.sortable = tableColumn.sortable;
   },
 };

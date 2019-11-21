@@ -11,15 +11,14 @@ describe('TableComponent', () => {
     localVue.component('table-column-super', {
       mixins: [tableColumnMixin],
       render(h) {
-        return h(
-          'table-column',
-          {
-            props: {
-              show: 'b',
-              sortable: true,
-            },
-          },
-        );
+        if (this._props.row) {
+          return h(
+            'td',
+            {},
+            [this._props.row.b]
+          );
+        }
+        return h();
       },
     });
 
@@ -86,6 +85,7 @@ describe('TableComponent', () => {
 
     it('should display content', async() => {
       const component = initMockComponent();
+      await component.vm.$nextTick();
       await component.vm.$nextTick();
 
       const trWrappers = component.findAll('tbody tr').wrappers;
@@ -365,8 +365,8 @@ describe('TableComponent', () => {
   function initMockComponent({ firstNameSortable = false, lastNameHidden = false, propsData = {}, slots = {}, ...args } = {}) {
     const defaultSlot = `
       <table-column show="firstName" label="First name" :sortable="${firstNameSortable}"></table-column>
-      <table-column show="lastName" label="Last name" :hidden="${lastNameHidden}"></table-column>
-      <table-column-super :hidden="${lastNameHidden}" />
+      <table-column show="lastName" label="Last name" :hidden="${lastNameHidden}"><template slot-scope="row">{{ row.lastName }}</template></table-column>
+      <table-column-super :hidden="${lastNameHidden}" show="b" />
     `;
 
     return mockTableComponent({

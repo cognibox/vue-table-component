@@ -210,15 +210,17 @@ export default {
   async mounted() {
     const columnComponents = this.$slots.default
       .filter((column) => column.componentInstance)
-      .map((column) => column.componentInstance);
+      .map((column) => column);
 
     this.columns = columnComponents.map((column) => new Column(column));
 
     columnComponents.forEach((columnCom) => {
-      if (columnCom.$options.props) {
-        Object.keys(columnCom.$options.props).forEach((prop) => columnCom.$watch(prop, () => {
-          this.columns = columnComponents.map((column) => new Column(column));
-        }));
+      if (columnCom.componentInstance.$options.props) {
+        Object.keys(columnCom.componentInstance.$options.props).forEach((prop) => {
+          columnCom.componentInstance.$watch(prop, () => {
+            this.columns = columnComponents.map((column) => new Column(column));
+          });
+        });
       }
     });
 

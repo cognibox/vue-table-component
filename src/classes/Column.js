@@ -16,11 +16,15 @@ export default class Column {
 
     for (const property in properties) {
       if (Object.prototype.hasOwnProperty.call(properties, property)) {
-        this[property] = columnComponent[property];
+        this[property] = columnComponent.componentInstance[property];
       }
     }
 
-    this.template = columnComponent.$scopedSlots.default;
+    if (columnComponent.componentOptions.tag === 'table-column') {
+      this.template = columnComponent.componentInstance.$scopedSlots.default;
+    } else {
+      this.component = columnComponent;
+    }
   }
 
   isSortable() {
