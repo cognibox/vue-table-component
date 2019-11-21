@@ -11,8 +11,7 @@ export default {
     }
 
     if (props.column.template) {
-      const rtn = createElement('td', data, props.column.template(props.row.data));
-      return rtn;
+      return createElement('td', data, props.column.template(props.row.data));
     }
     if (props.column.component) {
       const component = props.column.component;
