@@ -9,5 +9,10 @@ import tableColumnMixin from './table-column-mixin';
 
 export default {
   mixins: [tableColumnMixin],
+  data() {
+    return {
+      show: 'b',
+    };
+  },
 };
 </script>

@@ -10,6 +10,11 @@ describe('TableComponent', () => {
     localVue.component('table-column', TableColumn);
     localVue.component('table-column-super', {
       mixins: [tableColumnMixin],
+      data() {
+        return {
+          show: 'b',
+        };
+      },
       render(h) {
         if (this._props.row) {
           return h(
@@ -366,7 +371,7 @@ describe('TableComponent', () => {
     const defaultSlot = `
       <table-column show="firstName" label="First name" :sortable="${firstNameSortable}"></table-column>
       <table-column show="lastName" label="Last name" :hidden="${lastNameHidden}"><template slot-scope="row">{{ row.lastName }}</template></table-column>
-      <table-column-super :hidden="${lastNameHidden}" show="b" />
+      <table-column-super :hidden="${lastNameHidden}" />
     `;
 
     return mockTableComponent({
