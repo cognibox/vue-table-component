@@ -66,7 +66,7 @@ export default {
     },
 
     label() {
-      if (this.column.label === null) {
+      if (!this.column.label) {
         return this.column.show;
       }
 

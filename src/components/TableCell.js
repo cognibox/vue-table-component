@@ -13,6 +13,11 @@ export default {
     if (props.column.template) {
       return createElement('td', data, props.column.template(props.row.data));
     }
+    if (props.column.component) {
+      const component = props.column.component;
+      component.componentOptions.propsData.row = props.row.data;
+      return component;
+    }
 
     data.domProps = {};
     data.domProps.innerHTML = props.column.formatter(props.row.getValue(props.column.show), props.row.data);

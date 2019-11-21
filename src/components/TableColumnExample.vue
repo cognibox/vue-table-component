@@ -1,18 +1,18 @@
 <template>
-  <TableColumn
-    show="b"
-    :sortable="true"
-  />
+  <td v-if="row">
+    row {{ row.b }}
+  </td>
 </template>
 
 <script>
-import TableColumn from './TableColumn.vue';
 import tableColumnMixin from './table-column-mixin';
 
 export default {
-  components: {
-    TableColumn,
-  },
   mixins: [tableColumnMixin],
+  data() {
+    return {
+      show: 'b',
+    };
+  },
 };
 </script>

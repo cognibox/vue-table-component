@@ -3,11 +3,17 @@
     :data="[{ a: 1, b: '1' }, { a: 2, b: 2 }]"
     :pagination="{ perPage: 1, currentPage: 1 }"
   >
-    <TableColumn
+    <table-column
       show="a"
       :sortable="true"
-    />
-    <TableColumnExample />
+    >
+      <template slot-scope="row">
+        <div>
+          {{ row.a }}
+        </div>
+      </template>
+    </table-column>
+    <table-column-example show="b" />
   </TableComponent>
 </template>
 
