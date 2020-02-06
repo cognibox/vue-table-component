@@ -24,7 +24,7 @@
     "vue": "^2.6.10"
   },
   "devDependencies": {
-    "@cognibox/eslint-config-cbx-vue": "^1.1.1",
+    "@cognibox/eslint-config-cbx-vue": "^1.2.3",
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-plugin-unit-mocha": "^3.7.0",
     "@vue/cli-service": "^3.7.0",

@@ -20,7 +20,7 @@ describe('TableComponent', () => {
           return h(
             'td',
             {},
-            [this._props.row.b]
+            [this._props.row.b],
           );
         }
         return h();
